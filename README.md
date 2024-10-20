@@ -1,16 +1,16 @@
-# hw5
+# InterGallery
 
 A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Be sure to have you Flutter and Dart SDK' installed on your machine and working.
 
-A few resources to get you started if this is your first Flutter project:
+## Installation and Usage
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Clone the repo
+2. In the project directory, get any dependencies with `flutter pub get`
+3. Connect your android device (the web may not support all functionality)
+4. Run the command `flutter run` in the project directory
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+If any error occurs, be sure that flutter and you system is recognizes that your android devices is connect and can be detected. Also ensure dependencies and SDK's are up to date with the proper versions--may vary based on your needs.
