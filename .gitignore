@@ -1,2 +1,9 @@
 // Any pdf's
 *.pdf
+
+// dart tools
+.dart_tool
+
+// flutter things
+.flutter-plugins
+.flutter-plugins-dependencies
