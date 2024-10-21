@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'database/db.dart' as db;
 
 void main() {
+  db.init();
   runApp(const MyApp());
 }
 
