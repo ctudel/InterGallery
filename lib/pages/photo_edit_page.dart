@@ -47,19 +47,17 @@ class _PhotoEditState extends State<PhotoEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return MainScaffold(
-        title: 'New photo',
-        child: FutureBuilder<Photo>(
-          future: _photoFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasData) {
-              return Image.file(File(snapshot.data!.path));
-            } else {
-              return const Center(child: Text('No photo available'));
-            }
-          },
-        ));
+    return FutureBuilder<Photo>(
+      future: _photoFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasData) {
+          return Image.file(File(snapshot.data!.path));
+        } else {
+          return const Center(child: Text('No photo available'));
+        }
+      },
+    );
   }
 }
