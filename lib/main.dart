@@ -29,6 +29,9 @@ class MyApp extends StatelessWidget {
             title: 'Flutter Demo Home Page', child: HomePage()),
         routes: {
           '/camera': (context) => Camera(camera: _cameras[0]),
+          // FIXME: find a way to pass parameters to PhotoEdit
+          // pushParamRoute or smth?
+          //'/edit-photo': (context) => PhotoEdit(),
         });
   }
 }
