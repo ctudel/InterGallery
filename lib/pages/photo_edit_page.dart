@@ -5,9 +5,7 @@ import '../database/db.dart' as db;
 import '../pages/homepage.dart';
 
 class PhotoEdit extends StatefulWidget {
-  final String imagePath;
-
-  const PhotoEdit({super.key, required this.imagePath});
+  const PhotoEdit({super.key});
 
   @override
   State<PhotoEdit> createState() => _PhotoEditState();
@@ -20,16 +18,18 @@ class _PhotoEditState extends State<PhotoEdit> {
   @override
   void initState() {
     super.initState();
-    _photoFuture = _getPhoto();
+    _photoFuture = _getPhoto(context);
   }
 
-  Future<Photo> _getPhoto() async {
+  Future<Photo> _getPhoto(context) async {
+    // Extract arguements
+    final args = ModalRoute.of(context)!.settings.arguments as Photo;
+
     print('saving photo...');
 
     // Taken photo
     await db.savePhoto(
-      Photo(description: 'new photo', date: 'new date', path: widget.imagePath),
-    );
+        Photo(description: 'test photo', date: 'new date', path: args.path));
 
     photos = await db.getPhotos();
     print('getting photos');
