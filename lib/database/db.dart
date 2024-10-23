@@ -3,38 +3,46 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sqflite/utils/utils.dart';
+import '../models/photo.dart';
 
 late final Database _database;
 
 Future<void> init() async {
-  WidgetsFlutterBinding.ensureInitialized();
   print('Checking initialization');
+  final String path = join(await getDatabasesPath(), 'photos.db');
 
   // TODO: Make database that stores image paths
 
   _database = await openDatabase(
-    join(await getDatabasesPath(), 'photos.db'),
+    path,
+    version: 1,
     onCreate: (db, version) async {
-      await db
-          .execute('CREATE TABLE photos (id INTEGER PRIMARY KEY, path TEXT)');
+      await db.execute(
+          'CREATE TABLE photos (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, date TEXT, path TEXT)');
       print('performing');
       print('finished');
     },
-    version: 1,
   );
 }
 
-// TODO: Create method to insert into the database using parameters
-Future<void> saveImage({String? path}) async {
-  print('placeholder');
+/// Insert an image object
+Future<void> saveImage(Photo image) async {
+  _database.insert(
+    'photos',
+    image.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
 }
 
-// TODO: Create getter to get image paths; some ideas include:
-// Getting paths and storing them in a list
-// Returning the image given an id (int)
-// Add more here...
+/// Get all photos
+Future<List<Photo>> getImages() async {
+  final List<Map<String, dynamic>> maps = await _database.query('photos');
 
-Future<List<String>> getImages() async {
-  print('placeholder');
-  return [];
+  return List.generate(maps.length, (i) {
+    return Photo(
+        id: maps[i]['id'],
+        description: maps[i]['description'],
+        date: maps[i]['date'],
+        path: maps[i]['path']);
+  });
 }

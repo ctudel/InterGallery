@@ -7,3 +7,4 @@
 // flutter things
 .flutter-plugins
 .flutter-plugins-dependencies
+build/

@@ -24,17 +24,20 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
         home: const MainScaffold(
-            child: Text('Start of a new project'),
-            title: 'Flutter Demo Home Page'),
+            title: 'Flutter Demo Home Page',
+            child: Text('Start of a new project')),
         routes: {
-          '/camera': (context) => MainScaffold(
-              child: Camera(camera: _cameras[0]), title: 'Take a photo'),
+          '/camera': (context) => Camera(camera: _cameras[0]),
         });
   }
 }
 
 class MainScaffold extends StatelessWidget {
-  const MainScaffold({super.key, required this.child, required this.title});
+  const MainScaffold({
+    super.key,
+    required this.child,
+    required this.title,
+  });
 
   final String title;
   final Widget child;
@@ -48,15 +51,17 @@ class MainScaffold extends StatelessWidget {
         actions: [
           FilledButton(
               onPressed: () => Navigator.of(context).pushReplacementNamed('/'),
-              child: Icon(Icons.home))
+              child: const Icon(Icons.home))
         ],
       ),
       body: child,
+      // Take picture button
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pushReplacementNamed('/camera'),
+        onPressed: () => Navigator.of(context).pushNamed('/camera'),
         tooltip: 'New Photo',
-        child: const Icon(Icons.camera),
+        child: const Icon(Icons.camera_alt),
       ),
+      // Bottom navigation bar
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),
@@ -70,5 +75,6 @@ class MainScaffold extends StatelessWidget {
         },
       ),
     );
+    // Page with no camera button
   }
 }
