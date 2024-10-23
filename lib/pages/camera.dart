@@ -1,7 +1,7 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import './photo_edit_page.dart';
 
 class Camera extends StatefulWidget {
   final CameraDescription camera;
@@ -40,11 +40,6 @@ class _CameraState extends State<Camera> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Diplay Picture'),
-        actions: [
-          FilledButton(
-              onPressed: () => Navigator.of(context).pushReplacementNamed('/'),
-              child: const Icon(Icons.home))
-        ],
       ),
       body: FutureBuilder<void>(
           future: _cameraReady,
@@ -53,7 +48,12 @@ class _CameraState extends State<Camera> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            return CameraPreview(_controller);
+            _controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
+
+            return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: CameraPreview(_controller));
           }),
       // Take picture button
       floatingActionButton: FloatingActionButton(
@@ -63,30 +63,14 @@ class _CameraState extends State<Camera> {
             await _cameraReady;
             final image = await _controller.takePicture();
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    DisplayPictureScreen(imagePath: image.path)));
+                builder: (context) => PhotoEdit(imagePath: image.path)));
           } catch (e) {
             print(e);
           }
         },
         child: const Icon(Icons.camera),
       ),
-    );
-  }
-}
-
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({super.key, required this.imagePath});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('New Photo')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

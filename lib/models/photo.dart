@@ -5,16 +5,16 @@ class Photo {
   final String path;
 
   Photo(
-      {required this.id,
-      required this.description,
+      {required this.description,
       required this.date,
-      required this.path});
+      required this.path,
+      this.id = 0});
 
   // Use to insert row in table
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> map = {};
-    map["description"] = description;
     map["date"] = date;
+    map["description"] = description;
     map["path"] = path;
     return map;
   }

@@ -8,3 +8,6 @@
 .flutter-plugins
 .flutter-plugins-dependencies
 build/
+
+// todo list
+TODO.md
