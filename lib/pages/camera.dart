@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import './photo_edit_page.dart';
+import 'package:hw5/models/photo.dart';
 
 class Camera extends StatefulWidget {
   final CameraDescription camera;
@@ -62,8 +62,17 @@ class _CameraState extends State<Camera> {
             // Verify camera is initialized
             await _cameraReady;
             final image = await _controller.takePicture();
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => PhotoEdit(imagePath: image.path)));
+            print('picture taken');
+
+            // Pop camera page
+            Navigator.popUntil(context, ModalRoute.withName('/'));
+
+            // Push replacement to new photo edit page
+            Navigator.pushReplacementNamed(context, '/edit-photo',
+                arguments: Photo(
+                    description: 'test photo',
+                    date: DateTime.now().toString(),
+                    path: image.path));
           } catch (e) {
             print(e);
           }
