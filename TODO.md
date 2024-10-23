@@ -5,8 +5,8 @@
 
 ## Modifying
 
-[] Instead of pushing a new page with the taken photo,
-    push a replacement
+[x] Instead of pushing a new page with the taken photo,
+push a replacement
 
 ## Creating
 

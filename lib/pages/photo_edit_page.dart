@@ -1,36 +1,45 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/photo.dart';
-import '../models/main_scaffold.dart';
 import '../database/db.dart' as db;
 
 class PhotoEdit extends StatefulWidget {
-  const PhotoEdit({super.key});
+  const PhotoEdit({super.key, required this.imagePath});
+
+  final String imagePath;
 
   @override
   State<PhotoEdit> createState() => _PhotoEditState();
 }
 
 class _PhotoEditState extends State<PhotoEdit> {
-  late final Photo args;
+  // late final Photo args;
   late Future<Photo> _photoFuture;
   List<Photo> photos = [];
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    args = ModalRoute.of(context)!.settings.arguments as Photo;
+  void initState() {
+    super.initState();
     _photoFuture = _getPhoto();
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   args = ModalRoute.of(context)!.settings.arguments as Photo;
+  //   _photoFuture = _getPhoto();
+  // }
 
   Future<Photo> _getPhoto() async {
     print('saving photo...');
 
-    print('PATH: ${args.path}');
-
     // Taken photo
     await db.savePhoto(
-      Photo(description: 'new photo', date: 'new date', path: args.path),
+      // Photo(description: 'new photo', date: 'new date', path: args.path),
+      Photo(
+          description: 'new photo',
+          date: '${DateTime.now()}',
+          path: widget.imagePath),
     );
 
     photos = await db.getPhotos();
