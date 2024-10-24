@@ -4,6 +4,7 @@ import 'package:hw5/models/main_scaffold.dart';
 import 'package:hw5/pages/homepage.dart';
 import '../pages/photo_edit_page.dart';
 import '../pages/camera.dart';
+import '../pages/settings.dart';
 import '../models/photo.dart';
 
 late final List<CameraDescription> _cameras;
@@ -17,6 +18,7 @@ final routes = {
   '/list': (context) => listPage,
   '/grid': (context) => gridPage,
   '/camera': (context) => cameraPage,
+  '/settings': (context) => settingsPage,
 };
 
 // ===========================
@@ -43,6 +45,11 @@ const MainScaffold gridPage = MainScaffold(
 final MainScaffold cameraPage = MainScaffold(
   hasActionButton: false,
   child: Camera(camera: _cameras[0]),
+);
+
+const MainScaffold settingsPage = MainScaffold(
+  hasActionButton: false,
+  child: Settings(),
 );
 
 // Route with parameters passed in

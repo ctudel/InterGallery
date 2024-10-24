@@ -19,14 +19,14 @@ class MainScaffold extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text('WindowPane'),
-          // actions: [
-          //   ElevatedButton(
-          //     onPressed: () {
-          //       Navigator.of(context).pushNamed('/settings');
-          //     },
-          //     child: Icon(Icons.settings),
-          //   )
-          // ],
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/settings');
+              },
+              child: Icon(Icons.settings),
+            )
+          ],
         ),
         body: child,
         // Take picture button
@@ -61,6 +61,14 @@ class MainScaffold extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text('WindowPane'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/settings');
+              },
+              child: Icon(Icons.settings),
+            )
+          ],
         ),
         body: child,
         // Bottom navigation bar
