@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return FutureBuilder<List<Photo>>(
       future: _photoFuture,
       builder: (context, snapshot) {
@@ -49,11 +49,7 @@ class _HomePageState extends State<HomePage> {
           };
 
           // Main container
-          return Container(
-            padding: const EdgeInsets.only(top: 55, left: 20, right: 20),
-            // Separated item list
-            child: view,
-          );
+          return view;
         } else {
           return const Center(child: Text('No photo available'));
         }
@@ -72,24 +68,27 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.all(0),
-        itemCount: photos!.length,
-        separatorBuilder: (context, idx) {
-          return const SizedBox(width: 20);
-        },
-        // Photo item builder
-        itemBuilder: (BuildContext context, int index) {
-          // Photo content
-          return Column(
-            children: [
-              Text(photos![index].description),
-              Text(photos![index].date),
-              Image.file(File(photos![index].path)),
-            ],
-          );
-        });
+    return Padding(
+      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 6, left: MediaQuery.of(context).size.width / 5 , right: MediaQuery.of(context).size.width / 5),
+      child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.all(0),
+          itemCount: photos!.length,
+          separatorBuilder: (context, idx) {
+            return const SizedBox(width: 40);
+          },
+          // Photo item builder
+          itemBuilder: (BuildContext context, int index) {
+            // Photo content
+            return Column(
+              children: [
+                Text(photos![index].description),
+                Text(photos![index].date),
+                Image.file(File(photos![index].path)),
+              ],
+            );
+          }),
+    );
   }
 }
 
@@ -103,30 +102,33 @@ class ListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-        itemCount: photos!.length,
-        separatorBuilder: (context, idx) {
-          return const SizedBox(width: 10);
-        },
-        // Photo item builder
-        itemBuilder: (BuildContext context, int index) {
-          // Photo content
-          return Row(
-            children: [
-              Image.file(scale: 5, File(photos![index].path)),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(photos![index].description),
-                    Text(photos![index].date),
-                  ],
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: ListView.separated(
+          itemCount: photos!.length,
+          separatorBuilder: (context, idx) {
+            return const SizedBox(width: 10);
+          },
+          // Photo item builder
+          itemBuilder: (BuildContext context, int index) {
+            // Photo content
+            return Row(
+              children: [
+                Image.file(scale: 6, File(photos![index].path)),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(photos![index].description),
+                      Text(photos![index].date),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          );
-        });
+              ],
+            );
+          }),
+    );
   }
 }
 
@@ -151,35 +153,42 @@ class GridPage extends StatelessWidget {
       color: Colors.black45,
     );
 
-    return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-        ),
-        itemCount: photos!.length,
-        itemBuilder: (context, index) {
-          return Card(
-              color: const Color.fromRGBO(211, 188, 253, 1),
-              elevation: 8,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.file(
-                      File(photos![index].path),
-                    ),
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 20,
+            crossAxisSpacing: 20,
+            childAspectRatio: 1,
+          ),
+          itemCount: photos!.length,
+          itemBuilder: (context, index) {
+            return Card(
+                color: const Color.fromRGBO(211, 188, 253, 1),
+                elevation: 8,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Flexible(
+                        fit: FlexFit.tight,
+                        child: Image.file(
+                          File(photos![index].path),
+                        ),
+                      ),
+                      Text(
+                        photos![index].description,
+                        style: head,
+                      ),
+                      Text(
+                        photos![index].date,
+                        style: sub,
+                      ),
+                    ],
                   ),
-                  Text(
-                    photos![index].description,
-                    style: head,
-                  ),
-                  Text(
-                    photos![index].date,
-                    style: sub,
-                  ),
-                ],
-              ));
-        });
+                ));
+          }),
+    );
   }
 }
