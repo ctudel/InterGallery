@@ -36,50 +36,52 @@ class _CameraState extends State<Camera> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Diplay Picture'),
-      ),
-      body: FutureBuilder<void>(
-          future: _cameraReady,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return const Center(child: CircularProgressIndicator());
-            }
+    return Stack(
+      children: [
+        FutureBuilder<void>(
+            future: _cameraReady,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-            _controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
+              _controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
 
-            return Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: CameraPreview(_controller));
-          }),
-      // Take picture button
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          try {
-            // Verify camera is initialized
-            await _cameraReady;
-            final image = await _controller.takePicture();
-            print('picture taken');
+              return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: CameraPreview(_controller));
+            }),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: FloatingActionButton(
+              onPressed: () async {
+                try {
+                  // Verify camera is initialized
+                  await _cameraReady;
+                  final image = await _controller.takePicture();
+                  print('picture taken');
 
-            // Pop camera page
-            Navigator.popUntil(context, ModalRoute.withName('/'));
+                  // Pop camera page
+                  Navigator.popUntil(context, ModalRoute.withName('/'));
 
-            // Push replacement to new photo edit page
-            Navigator.pushReplacementNamed(context, '/edit-photo',
-                arguments: Photo(
-                    description: 'test photo',
-                    date: DateTime.now().toString(),
-                    path: image.path));
-          } catch (e) {
-            print(e);
-          }
-        },
-        child: const Icon(Icons.camera),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+                  // Push replacement to new photo edit page
+                  Navigator.pushReplacementNamed(context, '/edit-photo',
+                      arguments: Photo(
+                          description: 'test photo',
+                          date: DateTime.now().toString(),
+                          path: image.path));
+                } catch (e) {
+                  throw 'Error: $e';
+                }
+              },
+              child: const Icon(Icons.camera),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

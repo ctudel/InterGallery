@@ -14,28 +14,51 @@ Future<void> init() async {
 
 final routes = {
   '/': (context) => homePage,
-  '/camera': (context) => Camera(camera: _cameras[0]),
-  // '/edit-photo': (context) => editPhotoPage,
+  '/list': (context) => listPage,
+  '/grid': (context) => gridPage,
+  '/camera': (context) => cameraPage,
 };
 
 // ===========================
 // Pages with default scaffold
 // ===========================
-const MainScaffold homePage = MainScaffold(title: 'Home', child: HomePage());
+const MainScaffold homePage = MainScaffold(
+  child: HomePage(
+    viewType: 'home',
+  ),
+);
 
-// final MainScaffold editPhotoPage =
-//     MainScaffold(child: PhotoEdit(imagePath: ''), title: 'Photo Editor');
+const MainScaffold listPage = MainScaffold(
+  child: HomePage(
+    viewType: 'list',
+  ),
+);
 
-photoEditPage(settings) {
+const MainScaffold gridPage = MainScaffold(
+  child: HomePage(
+    viewType: 'grid',
+  ),
+);
+
+final MainScaffold cameraPage = MainScaffold(
+  hasActionButton: false,
+  child: Camera(camera: _cameras[0]),
+);
+
+// Route with parameters passed in
+MaterialPageRoute photoEditPage(RouteSettings settings) {
   if (settings.name == '/edit-photo') {
-    final args = settings.arguments as Photo;
+    final Photo args = settings.arguments as Photo;
 
     return MaterialPageRoute(builder: (context) {
       return MainScaffold(
-          title: 'Photo Editor',
-          child: PhotoEdit(
-            imagePath: args.path,
-          ));
+        hasActionButton: false,
+        child: PhotoEdit(
+          imagePath: args.path,
+        ),
+      );
     });
+  } else {
+    throw 'No path provided';
   }
 }

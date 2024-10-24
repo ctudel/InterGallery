@@ -1,3 +1,5 @@
+# TODO
+
 ## Testing
 
 [x] Image can be stored in database after snapping photo
@@ -8,13 +10,23 @@
 [x] Instead of pushing a new page with the taken photo,
 push a replacement
 
+[x] Photo Editor Page automatically saves photo to database,
+but we only want to save when the save button is pressed
+
 ## Creating
 
-[] Save image page w/ form
-[] TextFormField for image description
-[] Discard button
-[] Save button
-[] On save insert data into database
+### Photo Editor Page
+
+[x] Save image page w/ form
+[x] TextFormField for image description
+[x] Save & Discard button
+[x] On save insert data into database
+
+### Settings Page
+
+[] Change theme (light/dark)
+[] Change temperature (F/C)
+[] Change time
 
 ## Notes
 

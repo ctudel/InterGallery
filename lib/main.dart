@@ -24,7 +24,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      onGenerateRoute: (settings) => route_model.photoEditPage(settings),
+      onGenerateRoute: (RouteSettings settings) =>
+          route_model.photoEditPage(settings),
       routes: route_model.routes,
     );
   }

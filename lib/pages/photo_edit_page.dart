@@ -1,72 +1,96 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/photo.dart';
 import '../database/db.dart' as db;
 
 class PhotoEdit extends StatefulWidget {
-  const PhotoEdit({super.key, required this.imagePath});
-
   final String imagePath;
+
+  const PhotoEdit({super.key, required this.imagePath});
 
   @override
   State<PhotoEdit> createState() => _PhotoEditState();
 }
 
 class _PhotoEditState extends State<PhotoEdit> {
-  // late final Photo args;
-  late Future<Photo> _photoFuture;
-  List<Photo> photos = [];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final DateFormat _df = DateFormat('H:m MMMM d, y'); // date formatter
+  late final String _description;
 
   @override
-  void initState() {
-    super.initState();
-    _photoFuture = _getPhoto();
+  Widget build(BuildContext context) {
+    return Center(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            // Text field
+            Padding(
+              padding: const EdgeInsets.only(right: 40, left: 40),
+              child: TextFormField(
+                textAlign: TextAlign.center,
+                decoration: const InputDecoration(
+                    hintText: 'Please enter a description'),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a description';
+                  }
+
+                  return null;
+                },
+                onSaved: (String? value) {
+                  _description = value ?? '';
+                },
+              ),
+            ),
+            // Date
+            Text(_df.format(DateTime.now())),
+            // Image display
+            Image.file(File(widget.imagePath)),
+            // Discard and Save buttons
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    FilledButton(
+                        child: const Text('Discard'),
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed('/');
+                        }),
+                    FilledButton(
+                        child: const Text('Save'),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            setState(() {
+                              _uploadPhoto(
+                                  _description, _df.format(DateTime.now()));
+                              Navigator.of(context).pushReplacementNamed('/');
+                            });
+                          }
+                        }),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   args = ModalRoute.of(context)!.settings.arguments as Photo;
-  //   _photoFuture = _getPhoto();
-  // }
-
-  Future<Photo> _getPhoto() async {
+  // Upload photo to the database
+  Future<void> _uploadPhoto(String description, String date) async {
     print('saving photo...');
 
     // Taken photo
     await db.savePhoto(
       // Photo(description: 'new photo', date: 'new date', path: args.path),
-      Photo(
-          description: 'new photo',
-          date: '${DateTime.now()}',
-          path: widget.imagePath),
-    );
-
-    photos = await db.getPhotos();
-    print('getting photos');
-
-    // Debugging info
-    for (final photo in photos) {
-      print('Photo: ${photo.id}, ${photo.date}, ${photo.description}');
-    }
-
-    // Return most recent photo
-    return photos.last;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<Photo>(
-      future: _photoFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasData) {
-          return Image.file(File(snapshot.data!.path));
-        } else {
-          return const Center(child: Text('No photo available'));
-        }
-      },
+      Photo(description: description, date: date, path: widget.imagePath),
     );
   }
 }
