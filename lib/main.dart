@@ -1,15 +1,23 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'models/local_provider.dart';
+import 'models/cert_disable.dart';
 import 'models/routes.dart' as route_model;
 import 'database/db.dart' as db;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await db.init();
-  await db.checkTableSchema();
+  await db.checkTableSchema(); // debugging only
 
   await route_model.init();
+
+  // TODO: Comment out if you are not using an emulator or have
+  //        a valid network certificate
+  HttpOverrides.global =
+      CertDisable(); // bypass cert checking for emulator when fetching
 
   runApp(
     ChangeNotifierProvider(
