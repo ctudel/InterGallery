@@ -72,6 +72,8 @@ class _CameraState extends State<Camera> {
                       arguments: Photo(
                           description: 'test photo',
                           date: DateTime.now().toString(),
+                          location: '',
+                          weather: '',
                           path: image.path));
                 } catch (e) {
                   throw 'Error: $e';

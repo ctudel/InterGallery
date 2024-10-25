@@ -53,6 +53,9 @@ class _PhotoEditState extends State<PhotoEdit> {
                 final Map<String, dynamic>? weatherJson = snapshot.data!.$4;
                 final List<String> address =
                     locJson!["display_name"].split(',');
+                final weather =
+                    '${weatherJson!["main"]["temp"]}${weatherJson!["weather"][0]["main"]}';
+                print(weatherJson);
 
                 if (!services) {
                   return const Text('Enable location services to continue');
@@ -92,6 +95,7 @@ class _PhotoEditState extends State<PhotoEdit> {
                       Text(df.format(DateTime.now())),
                       // Image display
                       Image.file(File(widget.imagePath)),
+                      SizedBox(height: 50),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -105,6 +109,8 @@ class _PhotoEditState extends State<PhotoEdit> {
                         children: [
                           const Icon(Icons.cloud),
                           const SizedBox(width: 20),
+                          Text('${weatherJson!["main"]["temp"]}F'),
+                          const SizedBox(width: 5),
                           Text(weatherJson!["weather"][0]["main"]),
                         ],
                       ),
@@ -128,8 +134,12 @@ class _PhotoEditState extends State<PhotoEdit> {
                                     if (_formKey.currentState!.validate()) {
                                       _formKey.currentState!.save();
                                       setState(() {
-                                        _uploadPhoto(_description,
-                                            df.format(DateTime.now()));
+                                        _uploadPhoto(
+                                          _description,
+                                          df.format(DateTime.now()),
+                                          address[1],
+                                          weather
+                                        );
                                         Navigator.of(context)
                                             .pushReplacementNamed('/');
                                       });
@@ -151,11 +161,18 @@ class _PhotoEditState extends State<PhotoEdit> {
   }
 
   // Upload photo to the database
-  Future<void> _uploadPhoto(String description, String date) async {
+  Future<void> _uploadPhoto(
+      String description, String date, String location, String weather) async {
     print('saving photo...');
 
     await db.savePhoto(
-      Photo(description: description, date: date, path: widget.imagePath),
+      Photo(
+        description: description,
+        date: date,
+        location: location,
+        weather: weather,
+        path: widget.imagePath,
+      ),
     );
   }
 }
@@ -169,7 +186,8 @@ Future<
       Map<String, dynamic>? weatherData
     )> getLocationAndWeather() async {
   // FIXME: Paste your api key here
-  const String apiKey = '590dfae2d4a12dae209194e03cc7b43e'; // OpenWeather
+  const String apiKey =
+      '590dfae2d4a12dae209194e03cc7b43e'; // OpenWeather API key
 
   Location location = Location();
 
@@ -194,7 +212,7 @@ Future<
       'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${locationData.latitude}&lon=${locationData.longitude}'));
 
   final weatherResponse = await http.get(Uri.parse(
-      'https://api.openweathermap.org/data/2.5/weather?lat=${locationData.latitude}&lon=${locationData.longitude}&appid=$apiKey'));
+      'https://api.openweathermap.org/data/2.5/weather?lat=${locationData.latitude}&lon=${locationData.longitude}&appid=$apiKey&units=imperial'));
 
   final Map<String, dynamic> locJson = jsonDecode(locationResponse.body);
   final Map<String, dynamic> weatherJson = jsonDecode(weatherResponse.body);

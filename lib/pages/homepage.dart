@@ -85,6 +85,22 @@ class MainPage extends StatelessWidget {
                 Text(photos![index].description),
                 Text(photos![index].date),
                 Image.file(File(photos![index].path)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.location_pin),
+                    const SizedBox(width: 20),
+                    Text(photos![index].location),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.cloud),
+                    const SizedBox(width: 20),
+                    Text(photos![index].weather),
+                  ],
+                ),
               ],
             );
           }),

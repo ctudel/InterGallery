@@ -16,8 +16,8 @@ void main() async {
 
   // TODO: Comment out if you are not using an emulator or have
   //        a valid network certificate
-  HttpOverrides.global =
-      CertDisable(); // bypass cert checking for emulator when fetching
+  // HttpOverrides.global =
+  //     CertDisable(); // bypass cert checking for emulator when fetching
 
   runApp(
     ChangeNotifierProvider(

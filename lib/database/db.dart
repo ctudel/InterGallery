@@ -14,7 +14,7 @@ Future<void> init() async {
     path,
     onCreate: (db, version) async {
       await db.execute(
-          'CREATE TABLE photos (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, date TEXT, path TEXT)');
+          'CREATE TABLE photos (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, date TEXT, location TEXT, weather TEXT, path TEXT)');
       print('Table created');
     },
     version: 1,
@@ -78,6 +78,8 @@ Future<void> changeTimeFormat(bool hour24) async {
     newPhoto = Photo(
       description: photo["description"],
       date: newDate,
+      location: photo["location"],
+      weather: photo["weather"],
       path: photo["path"],
     );
 

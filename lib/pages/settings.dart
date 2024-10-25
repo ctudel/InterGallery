@@ -20,7 +20,7 @@ class _SettingsState extends State<Settings> {
       child: Column(
         children: [
           const ThemeSelector(),
-          const Text('temp'),
+          SizedBox(height: 50),
           Row(
             children: [
               Text(settingValues.timePeriod),
@@ -58,19 +58,18 @@ class ThemeSelector extends StatefulWidget {
 }
 
 class _ThemeSelectorState extends State<ThemeSelector> {
-  String? _value = 'light';
 
   @override
   Widget build(BuildContext context) {
     // Theme managing
     final LocalProvider theme = Provider.of<LocalProvider>(context);
+    final value = theme.themeData == ThemeMode.light ? 'light' : 'dark';
 
     return DropdownButton<String>(
-      value: _value,
+      value: value,
       isExpanded: true,
       onChanged: (String? selectedValue) {
         setState(() {
-          _value = selectedValue ?? 'light';
           if (selectedValue == 'dark')
             theme.toggleTheme(true);
           else
