@@ -12,9 +12,10 @@ void main() async {
   await route_model.init();
 
   runApp(
-      ChangeNotifierProvider(
-        create: (context) => PageTheme(),
-          child: const MyApp(),) as Widget,
+    ChangeNotifierProvider(
+      create: (context) => PageTheme(),
+      child: const MyApp(),
+    ) as Widget,
   );
 }
 
@@ -26,26 +27,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
-  final theme = Provider.of<PageTheme>(context);
+    final PageTheme theme = Provider.of<PageTheme>(context);
 
-   return MaterialApp(
-     title: 'Flutter Demo',
-     theme: ThemeData(
-       useMaterial3: true,
-       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-     ),
-     darkTheme: ThemeData(
-       useMaterial3: true,
-       brightness: Brightness.dark,
-     ),
-     themeMode: theme.themeData,
-     onGenerateRoute: (RouteSettings settings) =>
-         route_model.photoEditPage(settings),
-     routes: route_model.routes,
-   );
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+      ),
+      themeMode: theme.themeData,
+      onGenerateRoute: (RouteSettings settings) =>
+          route_model.photoEditPage(settings),
+      routes: route_model.routes,
+    );
   }
 }
-

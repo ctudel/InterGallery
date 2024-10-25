@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/photo.dart';
 import '../database/db.dart' as db;
+import 'settings.dart' as settings;
 
 class PhotoEdit extends StatefulWidget {
   final String imagePath;
@@ -15,7 +16,9 @@ class PhotoEdit extends StatefulWidget {
 
 class _PhotoEditState extends State<PhotoEdit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final DateFormat _df = DateFormat('H:m MMMM d, y'); // date formatter
+  final DateFormat _df = (settings.twenty4Hour)
+      ? DateFormat('H:mm MMMM d, y')
+      : DateFormat('h:mm a MMMM d, y'); // date formatter
   late final String _description;
 
   @override

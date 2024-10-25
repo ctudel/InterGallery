@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import '../models/photo.dart';
 
@@ -18,6 +19,8 @@ Future<void> init() async {
     },
     version: 1,
   );
+
+  changeTimeFormat(true);
 }
 
 /// Insert an image object
@@ -50,7 +53,41 @@ Future<void> deleteAllPhotos() async {
     await _database.delete(
       'photos',
       where: 'id = ?',
-      whereArgs: [photo],
+      whereArgs: <int>[photo],
+    );
+  }
+}
+
+Future<void> changeTimeFormat(bool hour24) async {
+  final List<Map<String, dynamic>> maps = await _database.query('photos');
+
+  for (final Map<String, dynamic> photo in maps) {
+    final DateFormat f24 = DateFormat("H:mm MMMM d, y");
+    final DateFormat f12 = DateFormat('h:mm a MMMM d, y');
+    late final Photo newPhoto;
+
+    // Parse old date
+    final DateTime oldDate =
+        (!hour24) ? f24.parse(photo["date"]) : f12.parse(photo["date"]);
+    print(oldDate);
+
+    // Switch format
+    final String newDate =
+        (!hour24) ? f12.format(oldDate) : f24.format(oldDate);
+    print(newDate);
+
+    // Create new photo instance with mutated date
+    newPhoto = Photo(
+      description: photo["description"],
+      date: newDate,
+      path: photo["path"],
+    );
+
+    await _database.update(
+      'photos',
+      newPhoto.toMap(),
+      where: 'id = ?',
+      whereArgs: <int>[photo["id"]],
     );
   }
 }

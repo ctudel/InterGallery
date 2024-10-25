@@ -24,7 +24,7 @@ class MainScaffold extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed('/settings');
               },
-              child: Icon(Icons.settings),
+              child: const Icon(Icons.settings),
             )
           ],
         ),
@@ -66,7 +66,7 @@ class MainScaffold extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed('/settings');
               },
-              child: Icon(Icons.settings),
+              child: const Icon(Icons.settings),
             )
           ],
         ),
