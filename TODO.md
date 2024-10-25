@@ -24,9 +24,9 @@ but we only want to save when the save button is pressed
 
 ### Settings Page
 
-[] Change theme (light/dark)
+[x] Change theme (light/dark)
 [] Change temperature (F/C)
-[] Change time
+[] Change time format
 
 ## Notes
 

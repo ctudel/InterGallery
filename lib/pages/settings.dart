@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
+import 'package:provider/provider.dart';
+import '../models/pageTheme.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -9,28 +10,37 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  String? _value = 'light';
+
   @override
   Widget build(BuildContext context) {
-    String? value = 'light';
+    final theme = Provider.of<PageTheme>(context);
 
-    return Column(
-      children: [
-        DropdownButton<String>(
-          value: value,
-          onChanged: (String? newValue) {
-            setState(() {
-              value = newValue;
-            });
-          },
-          items: const [
-            DropdownMenuItem<String>(child: Text('light')),
-            DropdownMenuItem<String>(child: Text('dark')),
-          ],
-        ),
-        const Text('theme'),
-        const Text('temp'),
-        const Text('time'),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 40.0, left: 40.0, right: 100.0),
+      child: Column(
+        children: [
+          DropdownButton<String>(
+            value: _value,
+            isExpanded: true,
+            onChanged: (String? selectedValue) {
+              setState(() {
+                _value = selectedValue ?? 'light';
+                if (selectedValue == 'dark') theme.toggleTheme(true);
+                else theme.toggleTheme(false);
+              });
+            },
+            items: const <DropdownMenuItem<String>>[
+              DropdownMenuItem<String>(
+                  value: 'light', child: Text('light')),
+              DropdownMenuItem<String>(value: 'dark', child: Text('dark')),
+            ],
+          ),
+          const Text('theme'),
+          const Text('temp'),
+          const Text('time'),
+        ],
+      ),
     );
   }
 }
