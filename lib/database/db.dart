@@ -19,8 +19,6 @@ Future<void> init() async {
     },
     version: 1,
   );
-
-  changeTimeFormat(true);
 }
 
 /// Insert an image object

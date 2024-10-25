@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../database/db.dart' as db;
-import '../models/pageTheme.dart';
-
-bool twenty4Hour = true;
+import '../models/local_provider.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -13,10 +11,10 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  String _timePeriod = '24 hour time';
-
   @override
   Widget build(BuildContext context) {
+    final LocalProvider settingValues = Provider.of<LocalProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.only(top: 40.0, left: 40.0, right: 100.0),
       child: Column(
@@ -25,14 +23,15 @@ class _SettingsState extends State<Settings> {
           const Text('temp'),
           Row(
             children: [
-              Text(_timePeriod),
+              Text(settingValues.timePeriod),
               Switch(
-                value: twenty4Hour,
+                value: settingValues.twenty4Hour,
                 onChanged: (bool value) {
                   setState(() {
-                    twenty4Hour = value;
+                    // update format and text values
+                    settingValues.setTimeFormat(value);
+                    // update dates and time for photos in database
                     changeTimeFormat(value);
-                    print(twenty4Hour);
                   });
                 },
               ),
@@ -64,7 +63,7 @@ class _ThemeSelectorState extends State<ThemeSelector> {
   @override
   Widget build(BuildContext context) {
     // Theme managing
-    final PageTheme theme = Provider.of<PageTheme>(context);
+    final LocalProvider theme = Provider.of<LocalProvider>(context);
 
     return DropdownButton<String>(
       value: _value,

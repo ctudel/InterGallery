@@ -22,7 +22,7 @@ class MainScaffold extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('/settings');
+                Navigator.of(context).pushReplacementNamed('/settings');
               },
               child: const Icon(Icons.settings),
             )
@@ -39,10 +39,8 @@ class MainScaffold extends StatelessWidget {
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.music_note_rounded), label: 'Grid'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.music_note_rounded), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.grid_3x3), label: 'Grid'),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           ],
           onTap: (idx) => {
             Navigator.of(context).pushReplacementNamed(switch (idx) {
@@ -64,7 +62,7 @@ class MainScaffold extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('/settings');
+                Navigator.of(context).pushReplacementNamed('/settings');
               },
               child: const Icon(Icons.settings),
             )
@@ -75,10 +73,8 @@ class MainScaffold extends StatelessWidget {
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.list), label: 'List'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.music_note_rounded), label: 'Grid'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.music_note_rounded), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.grid_3x3), label: 'Grid'),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           ],
           onTap: (idx) => {
             Navigator.of(context).pushReplacementNamed(switch (idx) {

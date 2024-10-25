@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'models/pageTheme.dart';
+import 'models/local_provider.dart';
 import 'models/routes.dart' as route_model;
 import 'database/db.dart' as db;
 
@@ -13,9 +13,9 @@ void main() async {
 
   runApp(
     ChangeNotifierProvider(
-      create: (context) => PageTheme(),
+      create: (context) => LocalProvider(),
       child: const MyApp(),
-    ) as Widget,
+    ),
   );
 }
 
@@ -29,7 +29,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    final PageTheme theme = Provider.of<PageTheme>(context);
+    final LocalProvider theme = Provider.of<LocalProvider>(context);
 
     return MaterialApp(
       title: 'Flutter Demo',
