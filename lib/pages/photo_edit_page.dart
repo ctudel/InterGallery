@@ -186,8 +186,7 @@ Future<
       Map<String, dynamic>? weatherData
     )> getLocationAndWeather() async {
   // FIXME: Paste your api key here
-  const String apiKey =
-      '590dfae2d4a12dae209194e03cc7b43e'; // OpenWeather API key
+  const String apiKey = ''; // OpenWeather API key
 
   Location location = Location();
 
